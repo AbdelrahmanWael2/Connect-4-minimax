@@ -18,10 +18,12 @@ pygame.init()
 WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
 WINDOW = pygame.display.set_mode(WINDOW_SIZE)
 
+
 # Function to create an empty Connect 4 board
 def create_board():
     board = [[0 for _ in range(COLUMN_COUNT)] for _ in range(ROW_COUNT)]
     return board
+
 
 # Function to draw the Connect 4 board
 def draw_board(board):
@@ -29,9 +31,14 @@ def draw_board(board):
         for col in range(COLUMN_COUNT):
             pygame.draw.rect(WINDOW, RED, (col * SQUARE_SIZE, (row + 1) * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
             if board[row][col] == 0:
-                pygame.draw.circle(WINDOW, YELLOW, (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2), SQUARE_SIZE // 2 - 5)
+                pygame.draw.circle(WINDOW, YELLOW,
+                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
+                                   SQUARE_SIZE // 2 - 5)
             elif board[row][col] == 1:
-                pygame.draw.circle(WINDOW, RED, (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2), SQUARE_SIZE // 2 - 5)
+                pygame.draw.circle(WINDOW, RED,
+                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
+                                   SQUARE_SIZE // 2 - 5)
+
 
 # Main function to run the game
 def main():
@@ -74,9 +81,11 @@ def main():
         draw_board(board)
         pygame.display.update()
 
+
 # Function to check if a move is valid
 def is_valid_move(board, col):
     return board[ROW_COUNT - 1][col] == 0
+
 
 # Function to get the next open row in a column
 def get_next_open_row(board, col):
@@ -84,15 +93,16 @@ def get_next_open_row(board, col):
         if board[r][col] == 0:
             return r
 
+
 # Function to drop a piece into the board
 def drop_piece(board, row, col, piece):
     board[row][col] = piece
 
+
 # Function to check if a player has won the game
 def check_winning_move(board, piece):
-    
-
     return False
+
 
 if __name__ == "__main__":
     main()
