@@ -1,11 +1,11 @@
 # Function to check if a move is valid
 def is_valid_move(board, col):
-    return board[0][col] == 0
+    return board[len(board) - 1][col] == 0
 
 
 # Function to get the next open row in a column
 def get_next_open_row(board, col):
-    for r in range(5, -1, -1):
+    for r in range(len(board)):
         if board[r][col] == 0:
             return r
 

@@ -73,7 +73,7 @@ def get_user_input():
         pygame.draw.rect(screen, input_color, input_rect)
         input_message = font.render("Enter max depth k: ", True, BLACK)
         input_num = font.render(input_text, True, BLACK)
-        screen.blit(input_num, (input_rect.x + 1, input_rect.y + 1 ))
+        screen.blit(input_num, (input_rect.x + 1, input_rect.y + 1))
         screen.blit(input_message, (5, input_rect.y))
 
         # Checkbox
@@ -108,18 +108,18 @@ def show_board(board):
 def draw_board(board, WINDOW):
     for row in range(ROW_COUNT):
         for col in range(COLUMN_COUNT):
-            pygame.draw.rect(WINDOW, BLUE, (col * SQUARE_SIZE, (row + 1) * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+            pygame.draw.rect(WINDOW, BLUE, (col * SQUARE_SIZE, (ROW_COUNT - row) * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
             if board[row][col] == 0:
                 pygame.draw.circle(WINDOW, WHITE,
-                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
+                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (ROW_COUNT - row) * SQUARE_SIZE + SQUARE_SIZE // 2),
                                    SQUARE_SIZE // 2 - 5)
             elif board[row][col] == 1:
                 pygame.draw.circle(WINDOW, YELLOW,
-                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
+                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (ROW_COUNT - row) * SQUARE_SIZE + SQUARE_SIZE // 2),
                                    SQUARE_SIZE // 2 - 5)
             elif board[row][col] == 2:
                 pygame.draw.circle(WINDOW, RED,
-                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
+                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, (ROW_COUNT - row) * SQUARE_SIZE + SQUARE_SIZE // 2),
                                    SQUARE_SIZE // 2 - 5)
 
 
