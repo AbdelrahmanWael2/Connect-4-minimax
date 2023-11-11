@@ -98,28 +98,25 @@ def get_user_input():
         pygame.display.flip()
 
 
+def agent_move(board, max_depth):
+    c_board = copy.deepcopy(board)
+    current_state = INode(c_board, 0, None)
+    new_col = minimax(current_state, max_depth, True)[1]
+    new_row = get_next_open_row(board, new_col)
+    drop_piece(board, new_row, new_col, '1')
+    WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
+    WINDOW = pygame.display.set_mode(WINDOW_SIZE)
+    draw_board(board, WINDOW)
+
+
 def show_board(board):
     # Initialize pygame
     pygame.init()
     WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
     WINDOW = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption("Connect 4 Game")
-    # c_board = copy.deepcopy(board)
-    # test_state = INode(c_board, 0, None)
-    # new_col = minimax(test_state, 4, True)[1]
-    # new_row = get_next_open_row(board, new_col)
-    # drop_piece(board, new_row, new_col, '1')
-    # draw_board(board, WINDOW)
-    # pygame.display.update()   # remove the comments if you want the ai to play first
     while window_interact(board, WINDOW):
         pass
-    c_board = copy.deepcopy(board)
-    test_state = INode(c_board, 0, None)
-    new_col = minimax(test_state, 4, True)[1]
-    new_row = get_next_open_row(board, new_col)
-    drop_piece(board, new_row, new_col, '1')
-    draw_board(board, WINDOW)
-    pygame.display.update()
 
 
 # Function to draw the Connect 4 board

@@ -83,9 +83,9 @@ def calc_score(board):
         for m in range(ROWS):
             for n in range(COLUMNS):
                 if board[m][n] == '1':
-                    position_score += SCORE_MATRIX[i][j]
+                    position_score += SCORE_MATRIX[m][n]
                 elif board[m][n] == '2':
-                    position_score -= SCORE_MATRIX[i][j]
+                    position_score -= SCORE_MATRIX[m][n]
 
         return position_score
 

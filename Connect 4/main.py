@@ -1,4 +1,4 @@
-from GUI import show_board, get_user_input
+from GUI import show_board, get_user_input, agent_move
 
 # Constants
 ROW_COUNT = 6
@@ -15,7 +15,7 @@ def create_board():
 def main():
     # initialization
     board = create_board()
-    turn = 0  # 0 for RED (AI) , 1 for YELLOW (player)
+    turn = 1  # 0 for RED (AI) , 1 for YELLOW (player)
 
     count = 0  # redundant
 
@@ -30,7 +30,7 @@ def main():
             show_board(board)
             turn = 1 - turn
         else:
-            # call minimax to make agent play by only modify board array giving max_depth and with_ab
+            agent_move(board, max_depth)
             print(f"AI {count}")  # redundant
             count = count + 1  # redundant
             turn = 1 - turn
