@@ -1,5 +1,5 @@
 class INode:
-    def __int__(self, board, depth, parent=None):
+    def __init__(self, board, depth, parent):
         self.board = board
         self.parent = parent
         self.depth = depth

@@ -1,6 +1,10 @@
+from Minimax import *
+from GameLogic import *
+from INode import *
 import pygame
 import sys
-from GameLogic import *
+import copy
+
 
 # This is a primitive non-functional GUI that will be modified or more likely built from scratch
 
@@ -100,8 +104,22 @@ def show_board(board):
     WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
     WINDOW = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption("Connect 4 Game")
+    # c_board = copy.deepcopy(board)
+    # test_state = INode(c_board, 0, None)
+    # new_col = minimax(test_state, 4, True)[1]
+    # new_row = get_next_open_row(board, new_col)
+    # drop_piece(board, new_row, new_col, '1')
+    # draw_board(board, WINDOW)
+    # pygame.display.update()   # remove the comments if you want the ai to play first
     while window_interact(board, WINDOW):
         pass
+    c_board = copy.deepcopy(board)
+    test_state = INode(c_board, 0, None)
+    new_col = minimax(test_state, 4, True)[1]
+    new_row = get_next_open_row(board, new_col)
+    drop_piece(board, new_row, new_col, '1')
+    draw_board(board, WINDOW)
+    pygame.display.update()
 
 
 # Function to draw the Connect 4 board
@@ -109,15 +127,15 @@ def draw_board(board, WINDOW):
     for row in range(ROW_COUNT):
         for col in range(COLUMN_COUNT):
             pygame.draw.rect(WINDOW, BLUE, (col * SQUARE_SIZE, (row + 1) * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-            if board[row][col] == 0:
+            if board[row][col] == '0':
                 pygame.draw.circle(WINDOW, WHITE,
                                    (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
                                    SQUARE_SIZE // 2 - 5)
-            elif board[row][col] == 1:
+            elif board[row][col] == '1':
                 pygame.draw.circle(WINDOW, YELLOW,
                                    (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
                                    SQUARE_SIZE // 2 - 5)
-            elif board[row][col] == 2:
+            elif board[row][col] == '2':
                 pygame.draw.circle(WINDOW, RED,
                                    (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
                                    SQUARE_SIZE // 2 - 5)
@@ -125,6 +143,7 @@ def draw_board(board, WINDOW):
 
 # Function to show board to user and waits action
 def window_interact(board, WINDOW):
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -144,7 +163,7 @@ def window_interact(board, WINDOW):
 
             if is_valid_move(board, col):
                 row = get_next_open_row(board, col)
-                drop_piece(board, row, col, 2)
+                drop_piece(board, row, col, '2')
                 draw_board(board, WINDOW)
                 pygame.display.update()
                 return False

@@ -7,7 +7,7 @@ COLUMN_COUNT = 7
 
 # Function to create an empty Connect 4 board
 def create_board():
-    board = [[0 for _ in range(COLUMN_COUNT)] for _ in range(ROW_COUNT)]
+    board = [['0' for _ in range(COLUMN_COUNT)] for _ in range(ROW_COUNT)]
     return board
 
 
