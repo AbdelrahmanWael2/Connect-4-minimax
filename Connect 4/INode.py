@@ -3,8 +3,7 @@ class INode:
         self.board = board
         self.parent = parent
         self.depth = depth
-        self.score = 0
-        self.turn = 0
+        self.children = []
 
 
     #def expand(self):

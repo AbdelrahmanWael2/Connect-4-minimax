@@ -1,12 +1,13 @@
 import math
 import random
-import GUI
 import INode
 import copy
-from GUI import *
+import GUI
 from GameLogic import *
 from heuristicX import *
 from INode import *
+
+cache = {}
 
 
 def get_valid_locations(board):
@@ -33,6 +34,13 @@ def minimax(state, depth, is_maximizing):
             # If the maximum depth is reached, return the calculated score and None
             return calc_score(state.board), None
 
+    # Generate a hash key for the current state
+    state_key = tuple(map(tuple, state.board))
+
+    # Check if the state has already been evaluated and stored in the cache
+    if state_key in cache:
+        return cache[state_key]
+
     # Get the valid locations for the next move
     valid_locations = get_valid_locations(state.board)
 
@@ -49,6 +57,7 @@ def minimax(state, depth, is_maximizing):
             drop_piece(new_board, row, col, '1')
             # Create a new state and recursively call minimax for the next level
             new_state = INode(new_board, depth - 1, state)
+            state.children.append(new_state)
             new_score = minimax(new_state, new_state.depth, False)[0]
             # Update the score and played column if a better move is found
             if new_score > score:
@@ -65,10 +74,13 @@ def minimax(state, depth, is_maximizing):
             drop_piece(new_board, row, col, '2')
             # Create a new state and recursively call minimax for the next level
             new_state = INode(new_board, depth - 1, state)
+            state.children.append(new_state)
             new_score = minimax(new_state, new_state.depth, True)[0]
             # Update the score and played column if a better move (with respect to the AI) is found
             if new_score < score:
                 score = new_score
                 played_col = col
+        # Store the evaluation result in the cache
+        cache[state_key] = (score, played_col)
         return score, played_col
 
