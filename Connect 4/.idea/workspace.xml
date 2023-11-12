@@ -7,7 +7,7 @@
     <list default="true" id="c4a3441e-55f4-41bc-94b1-0ecbb8dff259" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/INode.py" beforeDir="false" afterPath="$PROJECT_DIR$/INode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameLogic.py" beforeDir="false" afterPath="$PROJECT_DIR$/GameLogic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Minimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/Minimax.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

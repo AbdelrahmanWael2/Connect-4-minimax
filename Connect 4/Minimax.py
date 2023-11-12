@@ -49,7 +49,7 @@ def minimax(state, depth, is_maximizing):
             row = get_next_open_row(state.board, col)
             # Make a copy of the board and drop a piece in the current column
             new_board = copy.deepcopy(state.board)
-            drop_piece(new_board, row, col, '1')
+            new_board[row][col] = '1'
             # Create a new state and recursively call minimax for the next level
             new_state = INode(new_board, depth - 1, state)
             state.children.append(new_state)
@@ -67,7 +67,7 @@ def minimax(state, depth, is_maximizing):
             row = get_next_open_row(state.board, col)
             # Make a copy of the board and drop a piece in the current column
             new_board = copy.deepcopy(state.board)
-            drop_piece(new_board, row, col, '2')
+            new_board[row][col] = '2'
             # Create a new state and recursively call minimax for the next level
             new_state = INode(new_board, depth - 1, state)
             state.children.append(new_state)

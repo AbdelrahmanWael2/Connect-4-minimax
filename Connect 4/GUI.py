@@ -107,9 +107,9 @@ def agent_move(board, max_depth):
         print(child.score)
     Minimax.cache.clear()
     new_row = get_next_open_row(board, new_col)
-    drop_piece(board, new_row, new_col, '1')
     WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
     WINDOW = pygame.display.set_mode(WINDOW_SIZE)
+    drop_piece(board, new_row, new_col, '1', WINDOW)
     draw_board(board, WINDOW)
 
 
@@ -164,7 +164,7 @@ def window_interact(board, WINDOW):
 
             if is_valid_move(board, col):
                 row = get_next_open_row(board, col)
-                drop_piece(board, row, col, '2')
+                drop_piece(board, row, col, '2', WINDOW)
                 draw_board(board, WINDOW)
                 pygame.display.update()
                 return False
