@@ -1,5 +1,5 @@
 from GUI import show_board, get_user_input, agent_move
-
+from DrawTree import *
 # Constants
 ROW_COUNT = 6
 COLUMN_COUNT = 7
@@ -30,11 +30,13 @@ def main():
             show_board(board)
             turn = 1 - turn
         else:
-            agent_move(board, max_depth)
+            tree = agent_move(board, max_depth)
+            # drawTree(board, tree)
             print(f"AI {count}")  # redundant
             count = count + 1  # redundant
             turn = 1 - turn
 
 
 if __name__ == "__main__":
-    main()
+    drawTree()
+    # main()
