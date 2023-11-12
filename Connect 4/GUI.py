@@ -104,7 +104,7 @@ def agent_move(board, max_depth):
     current_state = INode(c_board, 0, None)
     new_col = minimax(current_state, max_depth, True)[1]
     for child in current_state.children:
-        print(child.board)
+        print(child.score)
     Minimax.cache.clear()
     new_row = get_next_open_row(board, new_col)
     drop_piece(board, new_row, new_col, '1')
