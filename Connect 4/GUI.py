@@ -111,7 +111,7 @@ def agent_move(board, max_depth):
     WINDOW = pygame.display.set_mode(WINDOW_SIZE)
     drop_piece(board, new_row, new_col, '1', WINDOW)
     draw_board(board, WINDOW)
-
+    return current_state, current_state.children
 
 def show_board(board):
     # Initialize pygame
