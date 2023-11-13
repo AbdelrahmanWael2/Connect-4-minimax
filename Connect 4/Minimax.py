@@ -27,12 +27,7 @@ def minimax(state, depth, is_maximizing):
     # Check if the game is over or if the maximum depth is reached
     game_over = is_terminal_state(state.board)
     if depth == 0 or game_over:
-        if game_over:
-            # If the game is over, return a score of 0 and None (no played column)
-            return 0, None
-        else:
-            # If the maximum depth is reached, return the calculated score and None
-            return calc_score(state.board), None
+        return calc_score(state.board), None
 
     # Generate a hash key for the current state
     state_key = tuple(map(tuple, state.board))
@@ -54,11 +49,12 @@ def minimax(state, depth, is_maximizing):
             row = get_next_open_row(state.board, col)
             # Make a copy of the board and drop a piece in the current column
             new_board = copy.deepcopy(state.board)
-            drop_piece(new_board, row, col, '1')
+            new_board[row][col] = '1'
             # Create a new state and recursively call minimax for the next level
             new_state = INode(new_board, depth - 1, state)
             state.children.append(new_state)
             new_score = minimax(new_state, new_state.depth, False)[0]
+            new_state.score = new_score
             # Update the score and played column if a better move is found
             if new_score > score:
                 score = new_score
@@ -71,7 +67,7 @@ def minimax(state, depth, is_maximizing):
             row = get_next_open_row(state.board, col)
             # Make a copy of the board and drop a piece in the current column
             new_board = copy.deepcopy(state.board)
-            drop_piece(new_board, row, col, '2')
+            new_board[row][col] = '2'
             # Create a new state and recursively call minimax for the next level
             new_state = INode(new_board, depth - 1, state)
             state.children.append(new_state)
