@@ -17,12 +17,8 @@ def main():
     board = create_board()
     turn = 1  # 0 for RED (AI) , 1 for YELLOW (player)
 
-    count = 0  # redundant
-
     # Read user input
     max_depth, with_ab = get_user_input()
-    print(max_depth)   # redundant
-    print(with_ab)   # redundant
 
     # Start Game
     while True:
@@ -30,13 +26,10 @@ def main():
             show_board(board)
             turn = 1 - turn
         else:
-            tree = agent_move(board, max_depth)
-            # drawTree(board, tree)
-            print(f"AI {count}")  # redundant
-            count = count + 1  # redundant
+            parent, tree = agent_move(board, max_depth)
+            drawTree(parent, tree, max_depth)
             turn = 1 - turn
 
 
 if __name__ == "__main__":
-    drawTree()
-    # main()
+    main()
