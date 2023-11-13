@@ -5,11 +5,11 @@ ROW_COUNT = 6
 COLUMN_COUNT = 7
 
 
+
 # Function to create an empty Connect 4 board
 def create_board():
     board = [['0' for _ in range(COLUMN_COUNT)] for _ in range(ROW_COUNT)]
     return board
-
 
 # Main function to run the game
 def main():
@@ -29,6 +29,8 @@ def main():
             parent, tree = agent_move(board, max_depth)
             drawTree(parent, tree, max_depth)
             turn = 1 - turn
+
+
 
 
 if __name__ == "__main__":
