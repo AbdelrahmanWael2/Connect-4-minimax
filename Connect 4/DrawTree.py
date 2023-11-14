@@ -1,25 +1,13 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import *
-from INode import *
+
+YELLOW = "#ffff00"
+RED = "#ff0000"
 
 
-def createTree(nextGen, ans):
-    if len(nextGen) == 0:
-        return ans
-    ans.append([])
-    nextStep = []
-    for i in nextGen:
-        ans[len(ans) - 1].append(i)
-        for j in i.children:
-            nextStep.append(j)
-    return createTree(nextStep, ans)
-
-
-def createNode(arr):
+def createNode(node):
     ans = ""
-    for i in range(len(arr)):
-        for char in arr[i]:
+    for i in range(len(node.board)):
+        for char in node.board[i]:
             if char == '0':
                 ans += "E"
             if char == '1':
@@ -27,87 +15,50 @@ def createNode(arr):
             if char == '2':
                 ans += "P"
         ans += '\n'
+    ans += "Heuristic = " + str(node.score)
     return ans
 
 
-def drawTree(parent, nextGen, n):
-    root = tk.Tk()
-    scrollbar = ttk.Scrollbar(root, orient=HORIZONTAL)
-    scrollbar.pack(side=BOTTOM, fill=X)
-    scrollbar2 = ttk.Scrollbar(root, orient=VERTICAL)
-    scrollbar2.pack(side=RIGHT, fill=Y)
-    canvas = Canvas(root, width=1500, height=700, xscrollcommand=scrollbar.set, yscrollcommand=scrollbar2.set)
-    allFrames = tk.Frame(canvas)
-    canvas.create_window((0, 0), window=allFrames, anchor='nw')
-
-    tree = [[parent]]
-    tree = createTree(nextGen, tree)
-
-    layers = [] * n
-    for i in range(n):
-        # for each level create a frame
-        layers.append(tk.Frame(allFrames, padx=10, pady=20))
-        layers[i].grid(row=i)
-
-        # for each frame add all its nodes
-        for j in range(len(tree[i])):
-            layers[i].columnconfigure(j, weight=1)
-            x = (tk.Label(layers[i], text=createNode(tree[i][j].board), font="20", background='#ff0000', padx=10,
-                          highlightbackground="green", borderwidth=10, highlightthickness=5))
-            x.grid(row=i, column=j)
-
-    canvas.pack()
-    scrollbar.config(command=canvas.xview)
-    scrollbar2.config(command=canvas.yview)
-    root.mainloop()
-
-# def drawTree():
-#     root = tk.Tk()
-#     scrollbar = ttk.Scrollbar(root, orient=HORIZONTAL)
-#     scrollbar.pack(side=BOTTOM, fill=X)
-#     scrollbar2 = ttk.Scrollbar(root, orient=VERTICAL)
-#     scrollbar2.pack(side=RIGHT, fill=Y)
-#     canvas = Canvas(root, width=1400, height=500, xscrollcommand=scrollbar.set, yscrollcommand=scrollbar2.set)
-#
-#     allframs = tk.Frame(canvas)
-#     canvas.create_window((0, 0), window=allframs, anchor='nw')
-
-
-#     n = 3
-#     frames = [] * n
-#     arrofarr = [] * n
-#
-#     arr = [[0, 0, 0, 1, 2, 0, 0], [0, 0, 0, 1, 2, 0, 0], [0, 0, 0, 1, 2, 0, 0], [0, 0, 0, 1, 2, 0, 0],
-#            [0, 0, 0, 1, 2, 0, 0], [0, 0, 0, 1, 2, 0, 0]]
-#
-#     for i in range(n):
-#         frames.append(tk.Frame(allframs, padx=10, pady=20))
-#         frames[i].grid(row=i)
-#         arrofarr.append([] * 7 ** i)
-#         for j in range(7 ** i):
-#             frames[i].columnconfigure(j, weight=1)
-#             arrofarr[i].append(tk.Label(frames[i], text=createNode(arr), font="20", background='#ff0000', padx=10,
-#                                         highlightbackground="green", borderwidth=10, highlightthickness=5))
-#             arrofarr[i][j].grid(row=i, column=j)
-#
-#     # Draw lines connecting parent node to its children
-#     canvas.pack()
-#     # side="left", fill="both", expand=True
-#     # root.update()
-#     # for i in range(n):
-#     #     for j in range(7 ** i):
-#     #         if i > 0:
-#     #             parent_node_index = j // 7
-#     #             parent_node = arrofarr[i - 1][parent_node_index]
-#     #             parent_node_center_x = parent_node.winfo_rootx() + parent_node.winfo_width() / 2
-#     #             parent_node_center_y = parent_node.winfo_rooty() + parent_node.winfo_height() / 2
-#     #             print(parent_node.winfo_rootx())
-#     #             current_node_center_x = arrofarr[i][j].winfo_rootx() + arrofarr[i][j].winfo_width() / 2
-#     #             current_node_center_y = arrofarr[i][j].winfo_rooty() + arrofarr[i][j].winfo_height() / 2
-#     #
-#     #             canvas.create_line(parent_node_center_x, parent_node_center_y, current_node_center_x,
-#     #                                current_node_center_y)
-#
-#     scrollbar.config(command=canvas.xview)
-#     scrollbar2.config(command=canvas.yview)
-#     root.mainloop()
+def drawTree(source, sourceTurn):
+    if source is not None and len(source.children) > 0:
+        if sourceTurn == 1:
+            parentColor = RED
+            childColor = YELLOW
+        else:
+            parentColor = YELLOW
+            childColor = RED
+        root = tk.Tk()
+        frame1 = tk.Frame(root)
+        parentLabel = tk.Label(frame1, text=createNode(source), font="25", background=parentColor, padx=10,
+                               borderwidth=10, highlightthickness=5, pady=10)
+        parentLabel.grid(row=0, column=0)
+        frame1.pack()
+        frame2 = tk.Frame(root)
+        for i in range(len(source.children)):
+            frame2.columnconfigure(i, weight=1)
+            x = tk.Label(frame2, text=createNode(source.children[i]), font="25", background=childColor, padx=10
+                         , borderwidth=10, highlightthickness=5, pady=10)
+            x.grid(row=0, column=i)
+        frame2.pack()
+        frame3 = tk.Frame(root)
+        for i in range(len(source.children)):
+            button_command = lambda i=i: drawTree(source.children[i], 1 - sourceTurn)
+            x = ((tk.Button(frame3, text="Next", font="25", background='#339966', padx=35, borderwidth=10,
+                            highlightthickness=5, pady=10, command=button_command)))
+            x.grid(row=0, column=i)
+        frame3.pack()
+        frame4 = tk.Frame(root)
+        backButton = tk.Button(frame4, text="Back", font="25", background='#339966', padx=10,
+                               borderwidth=10, highlightthickness=5, pady=10, command=lambda: drawTree(source.parent,
+                                                                                                       1 - sourceTurn))
+        backButton.grid(row=0, column=0)
+        frame4.pack()
+        frame5 = tk.Frame(root)
+        guidAgent = tk.Label(frame5, text="MAX", font="25", background=YELLOW, padx=10, borderwidth=10,
+                             highlightthickness=5, pady=10)
+        guidAgent.grid(row=0, column=0)
+        guidHuman = tk.Label(frame5, text="MIN", font="25", background=RED, padx=10, borderwidth=10,
+                             highlightthickness=5, pady=10)
+        guidHuman.grid(row=0, column=1)
+        frame5.pack()
+        root.mainloop()

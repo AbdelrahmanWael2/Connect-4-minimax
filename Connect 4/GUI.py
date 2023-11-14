@@ -5,7 +5,7 @@ from INode import *
 import pygame
 import sys
 import copy
-
+import tkinter as tk
 
 # This is a primitive non-functional GUI that will be modified or more likely built from scratch
 
@@ -21,82 +21,44 @@ BLACK = (0, 0, 0)
 
 
 def get_user_input():
-    pygame.init()
+    def submit():
+        max_depth_value = max_depth_entry.get()
+        alpha_beta_value = alpha_beta_var.get()
+        show_tree_value = show_tree_var.get()
+        root.destroy()
 
-    # Constants
-    WIDTH, HEIGHT = 400, 300
-    FONT_SIZE = 24
+        # Return the values
+        return max_depth_value, alpha_beta_value, show_tree_value
 
-    # Initialize screen
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("User Input Form")
+    # Create the main window
+    root = tk.Tk()
+    root.title("User Input")
+    frame = tk.Frame(root, background='#339966', padx=100)
+    frame.pack()
+    # Create and place the label and entry for max depth
+    max_depth_label = tk.Label(frame, background='#339966', text="Enter Max Depth:")
+    max_depth_label.pack(pady=5)
+    max_depth_entry = tk.Entry(frame)
+    max_depth_entry.pack(pady=5)
 
-    # Fonts
-    font = pygame.font.Font(None, FONT_SIZE)
+    # Create and place the checkbox for alpha-beta
+    alpha_beta_var = tk.BooleanVar()
+    alpha_beta_checkbox = tk.Checkbutton(frame, background='#339966', text="Use Alpha-Beta", variable=alpha_beta_var)
+    alpha_beta_checkbox.pack(pady=5)
 
-    # Input field
-    input_rect = pygame.Rect(160, 30, 100, 30)
-    input_color = WHITE
-    input_text = ''
-    input_active = False
+    # Create and place the checkbox for show tree
+    show_tree_var = tk.BooleanVar()
+    show_tree_checkbox = tk.Checkbutton(frame, background='#339966', text="Show Tree", variable=show_tree_var)
+    show_tree_checkbox.pack(pady=5)
 
-    # Checkbox
-    checkbox_rect = pygame.Rect(150, 100, 20, 20)
-    checkbox_checked = False
+    # Create and place the submit button
+    values = tk.Variable()
+    submit_button = tk.Button(frame, text="Submit", command=lambda: values.set(submit()))
+    submit_button.pack(pady=10)
 
-    # Submit button
-    button_rect = pygame.Rect(150, 150, 100, 30)
-    button_color = WHITE
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if input_rect.collidepoint(event.pos):
-                    input_active = not input_active
-                elif checkbox_rect.collidepoint(event.pos):
-                    checkbox_checked = not checkbox_checked
-                elif button_rect.collidepoint(event.pos):
-                    pygame.quit()
-                    return int(input_text) if input_text.isdigit() else 5, checkbox_checked
-
-            elif event.type == pygame.KEYDOWN:
-                if input_active:
-                    if event.key == pygame.K_RETURN:
-                        input_active = False
-                    elif event.key == pygame.K_BACKSPACE:
-                        input_text = input_text[:-1]
-                    else:
-                        input_text += event.unicode
-
-        # Draw everything
-        screen.fill((0, 180, 0))
-
-        # Input field
-        pygame.draw.rect(screen, input_color, input_rect)
-        input_message = font.render("Enter max depth k: ", True, BLACK)
-        input_num = font.render(input_text, True, BLACK)
-        screen.blit(input_num, (input_rect.x + 1, input_rect.y + 1 ))
-        screen.blit(input_message, (5, input_rect.y))
-
-        # Checkbox
-        pygame.draw.rect(screen, WHITE, checkbox_rect)
-        alpha_message = font.render("Use alph-beta: ", True, BLACK)
-        screen.blit(alpha_message, (5, checkbox_rect.y))
-        if checkbox_checked:
-            pygame.draw.line(screen, BLACK, (checkbox_rect.x + 5, checkbox_rect.y + 5),
-                             (checkbox_rect.x + checkbox_rect.width - 5, checkbox_rect.y + checkbox_rect.height - 5), 2)
-            pygame.draw.line(screen, BLACK, (checkbox_rect.x + 5, checkbox_rect.y + checkbox_rect.height - 5),
-                             (checkbox_rect.x + checkbox_rect.width - 5, checkbox_rect.y + 5), 2)
-
-        # Submit button
-        pygame.draw.rect(screen, button_color, button_rect)
-        button_surface = font.render("Submit", True, BLACK)
-        screen.blit(button_surface, (button_rect.x + 20, button_rect.y + 5))
-
-        pygame.display.flip()
+    # Run the main loop
+    root.mainloop()
+    return values.get()
 
 
 def agent_move(board, max_depth):
@@ -112,6 +74,7 @@ def agent_move(board, max_depth):
     drop_piece(board, new_row, new_col, '1', WINDOW)
     draw_board(board, WINDOW)
     return current_state, current_state.children
+
 
 def show_board(board):
     # Initialize pygame
@@ -144,7 +107,6 @@ def draw_board(board, WINDOW):
 
 # Function to show board to user and waits action
 def window_interact(board, WINDOW):
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
