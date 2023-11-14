@@ -65,6 +65,7 @@ def agent_move(board, max_depth):
     c_board = copy.deepcopy(board)
     current_state = INode(c_board, 0, None)
     new_col = minimax(current_state, max_depth, True)[1]
+    #new_col = alphaBetaPruning(current_state, max_depth, -math.inf, math.inf, True)[1]
     Minimax.cache.clear()
     new_row = get_next_open_row(board, new_col)
     WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
