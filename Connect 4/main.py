@@ -28,7 +28,7 @@ def main():
             show_board(board)
             turn = 1 - turn
         else:
-            parent, tree = agent_move(board, max_depth)
+            parent, tree = agent_move(board, max_depth, with_ab)
             if treeDraw == 1:
                 drawTree(parent, 0, None)
             turn = 1 - turn
