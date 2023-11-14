@@ -1,3 +1,6 @@
+import math
+
+
 class INode:
     def __init__(self, board, depth, parent):
         self.board = board
@@ -5,6 +8,8 @@ class INode:
         self.depth = depth
         self.children = []
         self.score = 0
+        self.alpha = -math.inf
+        self.beta = math.inf
 
 
     #def expand(self):
