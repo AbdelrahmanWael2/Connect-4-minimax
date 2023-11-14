@@ -19,7 +19,26 @@ def createNode(node):
     return ans
 
 
-def drawTree(source, sourceTurn):
+def center_window(window, width_percentage, height_percentage):
+    # Get screen width and height
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+
+    # Calculate window width and height based on percentages
+    window_width = int(screen_width * width_percentage)
+    window_height = int(screen_height * height_percentage)
+
+    # Calculate x and y coordinates to center the window
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2 - 50
+
+    # Set the geometry of the window
+    window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+
+def drawTree(source, sourceTurn, root):
+    if root is not None and source is not None and len(source.children) > 0:
+        root.destroy()
     if source is not None and len(source.children) > 0:
         if sourceTurn == 1:
             parentColor = RED
@@ -28,6 +47,10 @@ def drawTree(source, sourceTurn):
             parentColor = YELLOW
             childColor = RED
         root = tk.Tk()
+        root.title("Minimax Tree")
+        width_percentage = 0.75
+        height_percentage = 0.8
+        center_window(root, width_percentage, height_percentage)
         frame1 = tk.Frame(root)
         parentLabel = tk.Label(frame1, text=createNode(source), font="25", background=parentColor, padx=10,
                                borderwidth=10, highlightthickness=5, pady=10)
@@ -42,7 +65,7 @@ def drawTree(source, sourceTurn):
         frame2.pack()
         frame3 = tk.Frame(root)
         for i in range(len(source.children)):
-            button_command = lambda i=i: drawTree(source.children[i], 1 - sourceTurn)
+            button_command = lambda i=i: drawTree(source.children[i], 1 - sourceTurn, root)
             x = ((tk.Button(frame3, text="Next", font="25", background='#339966', padx=35, borderwidth=10,
                             highlightthickness=5, pady=10, command=button_command)))
             x.grid(row=0, column=i)
@@ -50,7 +73,8 @@ def drawTree(source, sourceTurn):
         frame4 = tk.Frame(root)
         backButton = tk.Button(frame4, text="Back", font="25", background='#339966', padx=10,
                                borderwidth=10, highlightthickness=5, pady=10, command=lambda: drawTree(source.parent,
-                                                                                                       1 - sourceTurn))
+                                                                                                       1 - sourceTurn,
+                                                                                                       root))
         backButton.grid(row=0, column=0)
         frame4.pack()
         frame5 = tk.Frame(root)

@@ -53,7 +53,7 @@ def get_user_input():
 
     # Create and place the submit button
     values = tk.Variable()
-    submit_button = tk.Button(frame, text="Submit", command=lambda: values.set(submit()))
+    submit_button = tk.Button(frame, text="Play", command=lambda: values.set(submit()))
     submit_button.pack(pady=10)
 
     # Run the main loop
@@ -65,8 +65,6 @@ def agent_move(board, max_depth):
     c_board = copy.deepcopy(board)
     current_state = INode(c_board, 0, None)
     new_col = minimax(current_state, max_depth, True)[1]
-    for child in current_state.children:
-        print(child.score)
     Minimax.cache.clear()
     new_row = get_next_open_row(board, new_col)
     WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)

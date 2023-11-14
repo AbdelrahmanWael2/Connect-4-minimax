@@ -30,7 +30,7 @@ def main():
         else:
             parent, tree = agent_move(board, max_depth)
             if treeDraw == 1:
-                drawTree(parent, 0)
+                drawTree(parent, 0, None)
             turn = 1 - turn
 
 

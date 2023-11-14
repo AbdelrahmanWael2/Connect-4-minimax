@@ -27,14 +27,18 @@ def minimax(state, depth, is_maximizing):
     # Check if the game is over or if the maximum depth is reached
     game_over = is_terminal_state(state.board)
     if depth == 0 or game_over:
-        return calc_score(state.board), None
+        score = calc_score(state.board)
+        state.score = score
+        return score, None
 
     # Generate a hash key for the current state
     state_key = tuple(map(tuple, state.board))
 
     # Check if the state has already been evaluated and stored in the cache
     if state_key in cache:
-        return cache[state_key]
+        state.score = cache[state_key][0].score
+        state.children = cache[state_key][0].children
+        return cache[state_key][0].score, cache[state_key][1]
 
     # Get the valid locations for the next move
     valid_locations = get_valid_locations(state.board)
@@ -54,11 +58,13 @@ def minimax(state, depth, is_maximizing):
             new_state = INode(new_board, depth - 1, state)
             state.children.append(new_state)
             new_score = minimax(new_state, new_state.depth, False)[0]
-            new_state.score = new_score
             # Update the score and played column if a better move is found
             if new_score > score:
                 score = new_score
                 played_col = col
+                state.score = new_score
+        # Store the evaluation result in the cache
+        cache[state_key] = (state, played_col)
         return score, played_col
     # Minimizing player's turn
     else:
@@ -76,7 +82,8 @@ def minimax(state, depth, is_maximizing):
             if new_score < score:
                 score = new_score
                 played_col = col
+                state.score = new_score
         # Store the evaluation result in the cache
-        cache[state_key] = (score, played_col)
+        cache[state_key] = (state, played_col)
         return score, played_col
 
