@@ -120,7 +120,7 @@ def alphaBetaPruning(state, depth, alpha, beta, is_maximizing):
             new_board = copy.deepcopy(state.board)
             new_board[row][col] = '1'
             # Create a new state and recursively call minimax for the next level
-            new_state = INode(new_board, depth - 1, state)
+            new_state = INode(new_board, depth - 1, state, alpha, beta)
             state.children.append(new_state)
             new_score = alphaBetaPruning(new_state, new_state.depth, alpha, beta, False)[0]
             # Update the score and played column if a better move is found
@@ -144,7 +144,7 @@ def alphaBetaPruning(state, depth, alpha, beta, is_maximizing):
             new_board = copy.deepcopy(state.board)
             new_board[row][col] = '2'
             # Create a new state and recursively call minimax for the next level
-            new_state = INode(new_board, depth - 1, state)
+            new_state = INode(new_board, depth - 1, state, alpha, beta)
             state.children.append(new_state)
             new_score = alphaBetaPruning(new_state, new_state.depth, alpha, beta, True)[0]
             # Update the score and played column if a better move (with respect to the AI) is found
