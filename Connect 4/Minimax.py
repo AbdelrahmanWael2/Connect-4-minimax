@@ -129,6 +129,7 @@ def alphaBetaPruning(state, depth, alpha, beta, is_maximizing):
                 played_col = col
                 state.score = new_score
             alpha = max(alpha, score)
+            new_state.alpha = alpha
             if alpha >= beta:
                 break
         # Store the evaluation result in the cache
@@ -153,6 +154,7 @@ def alphaBetaPruning(state, depth, alpha, beta, is_maximizing):
                 played_col = col
                 state.score = new_score
             beta = min(beta, score)
+            new_state.beta = beta
             if alpha >= beta:
                 break
         # Store the evaluation result in the cache
