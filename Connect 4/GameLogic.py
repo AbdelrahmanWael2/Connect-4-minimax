@@ -1,5 +1,7 @@
 import GUI
 import pygame
+
+
 # Function to check if a move is valid
 def is_valid_move(board, col):
     return board[0][col] == '0'
@@ -42,6 +44,84 @@ def get_color(piece):
     else:
         return GUI.WHITE
 
+
 # Function to check if a player has won the game
-def check_winning_move(board, piece):
-    return False
+def check_end(board):
+    for i in range(len(board[0])):
+        if board[0][i] == '0':
+            return False
+    return True
+
+
+def calcSoreByRow(board, player):
+    score = 0
+    for i in range(len(board)):
+        for j in range(len(board[0]) - 3):
+            if (board[i][j] == player and board[i][j + 1] == player and board[i][j + 2] == player
+                    and board[i][j + 3] == player):
+                score += 1
+    return score
+
+
+def calcSoreByCol(board, player):
+    score = 0
+    for j in range(len(board[0])):
+        for i in range(len(board) - 3):
+            if (board[i][j] == player and board[i + 1][j] == player and board[i + 2][j] == player
+                    and board[i + 3][j] == player):
+                score += 1
+    return score
+
+
+def calcSoreByDiagonal(board, player):
+    score = 0
+    # col index for first 4
+    for i in range(len(board[0]) - 3):
+        row = 0
+        col = i
+        while row < len(board) - 3 and col < len(board[0]) - 3:
+            if (board[row][col] == player and board[row + 1][col + 1] == player and board[row + 2][col + 2] == player
+                    and board[row + 3][col + 3] == player):
+                score += 1
+            row += 1
+            col += 1
+
+    # row index starting from index = 1
+    for i in range(1, len(board) - 3):
+        row = i
+        col = 0
+        while row < len(board) - 3 and col < len(board[0]) - 3:
+            if (board[row][col] == player and board[row + 1][col + 1] == player and board[row + 2][col + 2] == player
+                    and board[row + 3][col + 3] == player):
+                score += 1
+            row += 1
+            col += 1
+
+    # last 4 col indices in row 0 in reverse order
+    for i in range(len(board[0]) - 1, 2, -1):
+        row = 0
+        col = i
+        while row < len(board) - 3 and col >= 3:
+            if (board[row][col] == player and board[row + 1][col - 1] == player and board[row + 2][col - 2] == player
+                    and board[row + 3][col - 3] == player):
+                score += 1
+            row += 1
+            col -= 1
+
+    for i in range(1, len(board) - 3):
+        row = i
+        col = len(board[0]) - 1
+        while row < len(board) - 3 and col >= 3:
+            if (board[row][col] == player and board[row + 1][col - 1] == player and board[row + 2][col - 2] == player
+                    and board[row + 3][col - 3] == player):
+                score += 1
+            row += 1
+            col -= 1
+
+    return score
+
+
+def calcScore(board):
+    score1 = calcSoreByRow(board, '1') + calcSoreByCol(board, '1') + calcSoreByDiagonal(board, '1')
+    score2 = calcSoreByRow(board, '2') + calcSoreByCol(board, '2') + calcSoreByDiagonal(board, '2')
+    return score1, score2

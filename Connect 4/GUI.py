@@ -17,7 +17,6 @@ BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
-BLACK = (0, 0, 0)
 
 
 def get_user_input():
@@ -70,7 +69,7 @@ def agent_move(board, max_depth, with_ab):
         new_col = alphaBetaPruning(current_state, max_depth, -math.inf, math.inf, True)[1]
     Minimax.cache.clear()
     new_row = get_next_open_row(board, new_col)
-    WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
+    WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 2) * SQUARE_SIZE)
     WINDOW = pygame.display.set_mode(WINDOW_SIZE)
     drop_piece(board, new_row, new_col, '1', WINDOW)
     draw_board(board, WINDOW)
@@ -80,7 +79,7 @@ def agent_move(board, max_depth, with_ab):
 def show_board(board):
     # Initialize pygame
     pygame.init()
-    WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 1) * SQUARE_SIZE)
+    WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 2) * SQUARE_SIZE)
     WINDOW = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption("Connect 4 Game")
     while window_interact(board, WINDOW):
@@ -104,6 +103,7 @@ def draw_board(board, WINDOW):
                 pygame.draw.circle(WINDOW, RED,
                                    (col * SQUARE_SIZE + SQUARE_SIZE // 2, (row + 1) * SQUARE_SIZE + SQUARE_SIZE // 2),
                                    SQUARE_SIZE // 2 - 5)
+    writeScores(WINDOW, board)
 
 
 # Function to show board to user and waits action
@@ -135,3 +135,41 @@ def window_interact(board, WINDOW):
     draw_board(board, WINDOW)
     pygame.display.update()
     return True
+
+
+def writeScores(WINDOW, board):
+    # calculate each score
+    sc1, sc2 = calcScore(board)
+    compScore = f"Computer: {sc1}"
+    playerScore = f"YOU: {sc2}"
+
+    font = pygame.font.SysFont(None, 32)
+    # adjust computer score
+    compText = font.render(compScore, True, YELLOW)
+    compRect = compText.get_rect()
+    compRect.center = (SQUARE_SIZE * COLUMN_COUNT / 2, (ROW_COUNT + 1) * SQUARE_SIZE + 20)
+    WINDOW.blit(compText, compRect)
+    # adjust player score
+    playerText = font.render(playerScore, True, RED)
+    plyerRect = playerText.get_rect()
+    plyerRect.center = (SQUARE_SIZE * COLUMN_COUNT / 2, (ROW_COUNT + 1) * SQUARE_SIZE + 50)
+    WINDOW.blit(playerText, plyerRect)
+
+    # announce winner at end game
+    if check_end(board):
+        winner = "   GAME OVER "
+        winnerColor = WHITE
+        if sc1 > sc2:
+            winner += "Computer won"
+            winnerColor = YELLOW
+        elif sc2 < sc1:
+            winner += "You won"
+            winnerColor = RED
+        else:
+            winner += "Draw"
+        winnerText = font.render(winner, True, winnerColor)
+        winnerRect = winnerText.get_rect()
+        winnerRect.center = (SQUARE_SIZE * COLUMN_COUNT / 2, (ROW_COUNT + 1) * SQUARE_SIZE + 70)
+        WINDOW.blit(winnerText, winnerRect)
+
+    pygame.display.flip()
