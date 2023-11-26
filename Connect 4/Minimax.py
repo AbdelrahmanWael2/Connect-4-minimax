@@ -101,7 +101,7 @@ def alphaBetaPruning(state, depth, alpha, beta, is_maximizing):
         return score, None
 
     # Generate a hash key for the current state
-    state_key = tuple(map(tuple, state.board))
+    state_key = tuple(map(tuple, (map(tuple, state.board), (state.alpha, state.beta))))
 
     # Check if the state has already been evaluated and stored in the cache
     if state_key in cache:
