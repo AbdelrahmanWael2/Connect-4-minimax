@@ -65,8 +65,14 @@ def agent_move(board, max_depth, with_ab):
     current_state = INode(c_board, 0, None)
     if with_ab == 0:
         new_col = minimax(current_state, max_depth, True)[1]
+        expanded_nodes = Minimax.expanded_nodes
+        print('expanded_nodes = '+str(expanded_nodes))
+        Minimax.expanded_nodes = 0
     else:
         new_col = alphaBetaPruning(current_state, max_depth, -math.inf, math.inf, True)[1]
+        expanded_nodes = Minimax.expanded_nodes
+        print('expanded_nodes = ' + str(expanded_nodes))
+        Minimax.expanded_nodes = 0
     Minimax.cache.clear()
     new_row = get_next_open_row(board, new_col)
     WINDOW_SIZE = (COLUMN_COUNT * SQUARE_SIZE, (ROW_COUNT + 2) * SQUARE_SIZE)

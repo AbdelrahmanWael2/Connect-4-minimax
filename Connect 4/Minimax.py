@@ -8,8 +8,7 @@ from heuristicX import *
 from INode import *
 
 cache = {}
-
-
+expanded_nodes = 0
 def get_valid_locations(board):
     valid_locations = []
     for col in range(GUI.COLUMN_COUNT):
@@ -26,6 +25,9 @@ def is_terminal_state(board):
 def minimax(state, depth, is_maximizing):
     # Check if the game is over or if the maximum depth is reached
     game_over = is_terminal_state(state.board)
+    global expanded_nodes
+    expanded_nodes += 1
+
     if depth == 0 or game_over:
         score = calc_score(state.board)
         state.score = score
@@ -90,6 +92,8 @@ def minimax(state, depth, is_maximizing):
 
 def alphaBetaPruning(state, depth, alpha, beta, is_maximizing):
     # Check if the game is over or if the maximum depth is reached
+    global expanded_nodes
+    expanded_nodes += 1
     game_over = is_terminal_state(state.board)
     if depth == 0 or game_over:
         score = calc_score(state.board)
